@@ -1,0 +1,39 @@
+# ─── OS ───────────────────────────────────────────────────────────────────
+.DS_Store
+**/.DS_Store
+
+# ─── SECRETS — never commit ───────────────────────────────────────────────
+**/.env
+**/.env.local
+**/.env.*.local
+# (.env.example is intentionally NOT ignored — it's a safe placeholder)
+
+# ─── Generated data / databases (the seeded DB holds a real password) ─────
+**/*.db
+**/*.db-wal
+**/*.db-shm
+**/*.db-journal
+padel-app/data/
+
+# ─── Node / Next ──────────────────────────────────────────────────────────
+**/node_modules/
+padel-app/web/.next/
+padel-app/web/out/
+padel-app/web/next-env.d.ts
+
+# ─── Python ───────────────────────────────────────────────────────────────
+**/__pycache__/
+**/*.pyc
+padel-booking/.venv/
+
+# ─── Engine captures / traces / logs (may contain cookies/tokens) ─────────
+padel-booking/traces/
+padel-booking/network.jsonl
+**/*.log
+
+# ─── Local dev tooling (Mac-specific; not needed on the host) ─────────────
+.claude/
+
+# Legacy standalone browser bookers — not used by the deployed worker (local only)
+padel-booking/book_court.py
+padel-booking/book_court_qa.py
