@@ -30,6 +30,7 @@ DB_PATH = os.environ.get("PADEL_DB_PATH") or str(WORKER_DIR.parent / "data" / "b
 
 # Reuse the existing, battle-tested strike engine.
 sys.path.insert(0, str(ENGINE_DIR))
+sys.path.insert(0, str(WORKER_DIR))
 from book_court_api import (  # noqa: E402
     ET,
     CHROME_IMPERSONATE,
@@ -48,6 +49,7 @@ from book_court_api import (  # noqa: E402
     _classify_response,
 )
 from curl_cffi.requests import AsyncSession  # noqa: E402
+from crypto import decrypt  # noqa: E402
 
 REQUIRED_ACCOUNT_FIELDS = (
     "rckb_user_id",
@@ -171,7 +173,7 @@ async def strike_one(req: dict, *, dry_run: bool, immediate: bool) -> dict:
 
     payload = payload_for(req)
     cookies, csrf, ua = await authenticate(
-        headless=True, email=req["email"], password=req["password"]
+        headless=True, email=req["email"], password=decrypt(req["password"])
     )
     headers = build_headers(csrf, ua)
 

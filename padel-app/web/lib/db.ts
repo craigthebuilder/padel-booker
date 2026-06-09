@@ -10,6 +10,7 @@
 
 import { DatabaseSync } from 'node:sqlite';
 import path from 'node:path';
+import { encrypt } from './crypto';
 
 const DB_PATH =
   process.env.PADEL_DB_PATH ??
@@ -165,7 +166,7 @@ export function createAccount(a: AccountInput): number {
     .run(
       a.label,
       a.email,
-      a.password ?? '',
+      a.password ? encrypt(a.password) : '',
       a.rckb_user_id,
       a.card_id,
       a.card_last_four,
@@ -199,7 +200,7 @@ export function updateAccount(id: number, a: AccountInput): void {
   );
   // Only touch the password when a new one was actually provided.
   if (a.password && a.password.length > 0) {
-    db.prepare(`UPDATE accounts SET password = ? WHERE id = ?`).run(a.password, id);
+    db.prepare(`UPDATE accounts SET password = ? WHERE id = ?`).run(encrypt(a.password), id);
   }
 }
 
