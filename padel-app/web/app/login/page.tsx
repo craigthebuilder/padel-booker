@@ -32,7 +32,9 @@ export default async function LoginPage({
           className="mt-4 w-full rounded-md border border-white/15 bg-black px-3 py-2 text-white focus:border-accent focus:outline-none"
         />
         {error ? (
-          <p className="mt-2 text-sm text-red-400">Incorrect password.</p>
+          <p className="mt-2 text-sm text-red-400">
+            {error === '1' ? 'Incorrect password.' : error}
+          </p>
         ) : null}
 
         <button
