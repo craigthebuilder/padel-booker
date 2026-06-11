@@ -32,3 +32,19 @@ engine runs a *visible* browser + Chrome TLS impersonation for exactly this reas
 **Fix:** run the browser headed, not headless (matches what book_court_api.py does).
 **Lesson:** when automating a site that fights bots, the environment (headed vs headless,
 IP reputation, TLS fingerprint) matters as much as the code. Match the proven setup.
+
+## 2026-06-11 — first live booking failed: the worker ran headless
+**Symptom:** First real scheduled run failed at 06:58 (the auth phase, BEFORE the 07:02
+strike). Dashboard: "HTTP — · exception: Could not locate Login (home) within 10000ms".
+No booking POST was ever attempted.
+**Cause:** worker.py hardcoded `headless=True` in its authenticate() call, so RCKB's WAF
+bot-blocked it and served a challenge instead of the login page. The SAME bug as the
+2026-06-08 discover.py entry above — the lesson was learned there but never applied to the
+worker. It stayed hidden because every prior worker test used --dry-run, which skips auth
+entirely. The machine was fine (awake, plugged in, logged into the console) — pure code bug.
+**Fix:** worker.py `headless=True` -> `headless=False`. Headed auth needs an active GUI
+login session, so keep the Mac logged in.
+**Lesson:** a fix in one place (discover.py) must be applied everywhere the same operation
+runs (the worker). And "offline-verified" is NOT verified — --dry-run never exercised the
+auth path, so the bug could not surface until the first real run. Test the real path before
+trusting it; a green dry-run proves the plumbing, not the live behavior.

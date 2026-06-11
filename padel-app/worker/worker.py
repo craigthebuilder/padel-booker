@@ -172,8 +172,12 @@ async def strike_one(req: dict, *, dry_run: bool, immediate: bool) -> dict:
         }
 
     payload = payload_for(req)
+    # headless=False is REQUIRED. RCKB's WAF bot-blocks headless Chromium and serves a
+    # challenge page instead of the login form ("Could not locate Login"). The auth
+    # browser MUST run headed — which means this worker needs an active GUI login
+    # session (keep the Mac logged in). Do not "optimize" this back to True. See STUCK-LOG.md.
     cookies, csrf, ua = await authenticate(
-        headless=True, email=req["email"], password=decrypt(req["password"])
+        headless=False, email=req["email"], password=decrypt(req["password"])
     )
     headers = build_headers(csrf, ua)
 
