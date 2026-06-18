@@ -13,7 +13,8 @@ set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 WEB="$REPO/padel-app/web"
-ENGINE="$REPO/padel-booking"
+ENGINE="$REPO/padel-app/padel-booking"
+[ -d "$ENGINE" ] || ENGINE="$REPO/padel-booking"
 WORKER_PY="$REPO/padel-app/worker/worker.py"
 NODE="$(command -v node)"
 LA="$HOME/Library/LaunchAgents"

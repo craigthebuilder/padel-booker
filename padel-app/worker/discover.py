@@ -20,7 +20,10 @@ import sys
 from pathlib import Path
 
 WORKER_DIR = Path(__file__).resolve().parent
-ENGINE_DIR = WORKER_DIR.parent.parent / "padel-booking"
+# padel-booking is nested under padel-app; fall back to the legacy sibling layout.
+ENGINE_DIR = WORKER_DIR.parent / "padel-booking"
+if not ENGINE_DIR.exists():
+    ENGINE_DIR = WORKER_DIR.parent.parent / "padel-booking"
 sys.path.insert(0, str(ENGINE_DIR))
 
 from book_court_api import _login, BOOK_PAGE_URL, BASE_URL, FACILITY_ID  # noqa: E402

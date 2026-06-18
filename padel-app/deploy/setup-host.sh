@@ -11,7 +11,8 @@ set -euo pipefail
 # Repo root = two levels up from this script (…/padel-app/deploy/ -> repo root)
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 WEB="$REPO/padel-app/web"
-ENGINE="$REPO/padel-booking"
+ENGINE="$REPO/padel-app/padel-booking"
+[ -d "$ENGINE" ] || ENGINE="$REPO/padel-booking"
 WORKER="$REPO/padel-app/worker/worker.py"
 
 echo "Padel Booker · Stage 1 setup"

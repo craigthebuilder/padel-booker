@@ -25,7 +25,10 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 
 WORKER_DIR = Path(__file__).resolve().parent
-ENGINE_DIR = WORKER_DIR.parent.parent / "padel-booking"
+# padel-booking is nested under padel-app; fall back to the legacy sibling layout.
+ENGINE_DIR = WORKER_DIR.parent / "padel-booking"
+if not ENGINE_DIR.exists():
+    ENGINE_DIR = WORKER_DIR.parent.parent / "padel-booking"
 DB_PATH = os.environ.get("PADEL_DB_PATH") or str(WORKER_DIR.parent / "data" / "booking.db")
 
 # Reuse the existing, battle-tested strike engine.
